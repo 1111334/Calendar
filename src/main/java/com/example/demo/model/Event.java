@@ -13,7 +13,7 @@ import java.util.List;
 public class Event {
     @Id
     @GeneratedValue
-    private long eventId;
+    private long event_id;
     private String title;
     private String date;
     private String location;
@@ -27,17 +27,16 @@ public class Event {
         this.attendees = attendees;
     }
 
-
     public Event() {
 
     }
 
     public long getEventId() {
-        return eventId;
+        return event_id;
     }
 
     public void setEventId(long eventId) {
-        this.eventId = eventId;
+        this.event_id = eventId;
     }
 
     public String getTitle() {

@@ -5,6 +5,8 @@ import com.example.demo.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class EventService {
@@ -16,23 +18,21 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public Event getEventById(long eventId) {
-        return eventRepository.findById(eventId).get();
+    //public Event getEventById(long eventId) {
+    //    return eventRepository.findById(eventId).get();
+    //}
+
+    public List<Event> getEvent() {
+     return eventRepository.findAll();
     }
-    // public List<Event> viewEvent() {
-  //     return eventRepository.findAll();
-  // }
 
-  // public void putEvent(Event updatedEvent) {
-  //     eventRepository.save(updatedEvent);
-  // }
+   public void modifyEvent(Event updatedEvent) {
+       eventRepository.save(updatedEvent);
+   }
 
-  // public void deleteEvent(Event event) {
-  //     eventRepository.delete(event);
-  // }
+   public void deleteEvent(Event event) {
+       eventRepository.delete(event);
+   }
 
 
-    // public EventService(EventRepository eventRepository) {
-    //     this.eventRepository = eventRepository;
-    // }
 }

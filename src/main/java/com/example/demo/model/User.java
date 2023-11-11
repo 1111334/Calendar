@@ -10,7 +10,7 @@ public class User {
 
     @Id
     @GeneratedValue
-    private long id;
+    private long user_id;
     private String username;
     private String email;
     private String password;
@@ -25,12 +25,12 @@ public class User {
 
     }
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return user_id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long id) {
+        this.user_id = user_id;
     }
 
     public String getUsername() {
