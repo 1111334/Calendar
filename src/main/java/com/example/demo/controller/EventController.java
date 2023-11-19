@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.model.Calendar;
 import com.example.demo.model.Event;
+import com.example.demo.model.User;
+import com.example.demo.service.CalendarService;
 import com.example.demo.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +33,20 @@ public class EventController {
         }
     }
 
-    @GetMapping(value = "/get-event")
-    public List<Event> getEvent() {
-     return eventService.getEvent();
+    @PostMapping("/calendars/{calendarId}/events")
+    public ResponseEntity<String> associateEventToCalendar(@PathVariable Long calendarId, @RequestBody Event event) {
+        try {
+            //associare l'evento al calendario
+            eventService.associateEventToCalendar(calendarId, event);
+            return ResponseEntity.ok("Evento associato al calendario con successo");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Errore durante l'associazione dell'evento al calendario: " + e.getMessage());
+        }
+    }
+
+    @GetMapping(value = "/get-events")
+    public List<Event> getEvents() {
+        return eventService.getEvents();
     }
 
     @PutMapping(value = "/update-event")
@@ -54,4 +68,8 @@ public class EventController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+
+
+
 }

@@ -17,7 +17,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
    // public UserController(UserService userService) {
    //     this.userService = userService;
    // }
@@ -28,10 +27,10 @@ public class UserController {
         return "insert new user";
     }
 
-   @GetMapping(value = "/view-user")
-   public List<User> viewUser() {
-       return userService.viewUser();
-   }
+    @GetMapping(value = "/view")
+    public List<User> viewUser() {
+        return userService.viewUser();
+    }
 
     @PutMapping(value = "/put")
     public ResponseEntity<String> putUser(@RequestBody User updatedUser) {
@@ -47,4 +46,5 @@ public class UserController {
         userService.deleteUser(user);
         return ResponseEntity.ok("Utente eliminato con successo");
     }
+
 }

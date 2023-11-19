@@ -1,41 +1,46 @@
 package com.example.demo.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+
 
 @Entity
 public class Event {
     @Id
     @GeneratedValue
-    private long event_id;
+    private Long event_id;
     private String title;
-    private String date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
     private String location;
-    @OneToMany
-    private List<User> attendees;
 
-    public Event(String title, String date, String location, List<User> attendees) {
+    public Event(String title, String date, String location) {
         this.title = title;
-        this.date = date;
+        this.date = new Date();
         this.location = location;
-        this.attendees = attendees;
     }
 
     public Event() {
 
     }
 
-    public long getEventId() {
+    @ManyToOne
+    @JoinColumn(name = "calendar_id")
+    @JsonIgnore
+    private Calendar calendar;
+
+    @PrePersist
+    protected void onCreate() {date = new Date();}
+
+
+    public Long getEventId() {
         return event_id;
     }
 
-    public void setEventId(long eventId) {
+    public void setEventId(Long eventId) {
         this.event_id = eventId;
     }
 
@@ -47,11 +52,11 @@ public class Event {
         this.title = title;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -63,14 +68,12 @@ public class Event {
         this.location = location;
     }
 
-    public List<User> getAttendees() {
-        return attendees;
+    public Calendar getCalendar() {
+        return calendar;
     }
 
-    public void addAttendee(User user) {
-        this.attendees.add(user);
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
     }
-
-
 }
 
