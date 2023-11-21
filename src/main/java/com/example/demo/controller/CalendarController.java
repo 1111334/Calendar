@@ -3,13 +3,13 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Event;
-import com.example.demo.repository.CalendarRepository;
 import com.example.demo.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CalendarController {
@@ -31,6 +31,20 @@ public class CalendarController {
         calendarService.insertCalendar(calendar);
         return ResponseEntity.ok(calendar);
     }
+
+    @PostMapping("/events/{eventId}/calendars")
+    public ResponseEntity<String> associateEventToCalendar(@PathVariable Long eventId, @RequestBody Calendar calendar) {
+        try {
+            //associare il calendario all'evento
+            calendarService.associateCalendarToEvent(eventId, calendar);
+            return ResponseEntity.ok("Calendario associato all'evento con successo");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Errore durante l'associazione del calendario all'evento: " + e.getMessage());
+        }
+    }
+
+
+
 
 
 
