@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 
+import com.example.demo.DTO.UserDTO;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+
     public List<User> viewUser() {
         return userRepository.findAll();
     }
@@ -35,6 +37,9 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
 }
 
 

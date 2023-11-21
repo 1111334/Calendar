@@ -25,6 +25,19 @@ public class CalendarService {
         return ResponseEntity.ok(calendarRepository.findAll()).getBody();
     }
 
+    public void associateCalendarToEvent(Long eventId, Calendar calendar) throws Exception {
+        // Verifica che l'evento esista
+        Optional<Event> eventOptional = eventRepository.findById(eventId);
+        if (!eventOptional.isPresent()) {
+            throw new Exception("Calendario non trovato con ID " + eventId);
+        }
+
+        Event event = eventOptional.get(); //ottenere oggetto calendario
+        calendar.setEvents(List.of(event)); // imposta il calendario dell'evento sull'oggetto evento fornito come parametro.
+
+        // Salva il calendario nel database
+        calendarRepository.save(calendar);
+    }
     public void insertCalendar(Calendar calendar) {
         calendarRepository.save(calendar);
     }
