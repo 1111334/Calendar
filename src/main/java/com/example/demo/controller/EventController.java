@@ -1,15 +1,19 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.DTO.InvitoDTO;
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Event;
 import com.example.demo.model.User;
 import com.example.demo.service.CalendarService;
 import com.example.demo.service.EventService;
+import com.example.demo.service.InviteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -33,7 +37,7 @@ public class EventController {
         }
     }
 
-    @PostMapping("/calendars/{calendarId}/events")
+    @PostMapping("/calendars/{calendarId}/events") //Funziona
     public ResponseEntity<String> associateEventToCalendar(@PathVariable Long calendarId, @RequestBody Event event) {
         try {
             //associare l'evento al calendario
@@ -43,6 +47,19 @@ public class EventController {
             return ResponseEntity.badRequest().body("Errore durante l'associazione dell'evento al calendario: " + e.getMessage());
         }
     }
+
+    //@PostMapping("/{calendarID}/start/{startTime}/duration/{duration}")
+    //public ResponseEntity createNewEvent(@PathVariable int calendarID,
+    //                                     @RequestBody Event event,
+    //                                     @PathVariable LocalDateTime startTime,
+    //                                     @PathVariable int duration){
+//
+    //    try {
+    //        return ResponseEntity.ok(eventService.createEvent(calendarID, event, startTime, duration));
+    //    } catch (Exception e){
+    //        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    //    }
+    //}
 
     @GetMapping(value = "/get-events")
     public List<Event> getEvents() {
@@ -59,16 +76,15 @@ public class EventController {
         }
     }
 
-    @DeleteMapping(value = "/delete-event")
-    public ResponseEntity<String> deleteEvent(@RequestBody Event event) {
+    @DeleteMapping(value = "/delete-event/{eventId}") // Funziona
+    public ResponseEntity<String> deleteEvent(@PathVariable Long eventId) {
         try {
-            eventService.deleteEvent(event);
+            eventService.deleteEvent(eventId);
             return ResponseEntity.ok("Event deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 
 
 

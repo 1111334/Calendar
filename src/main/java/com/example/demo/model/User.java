@@ -20,6 +20,14 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Calendar> calendars;
 
+    @ManyToMany
+    @JoinTable(name = "user_event",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
+    @JsonIgnore
+    private List<Event> events;
+
+
 
     public long getUser_id() {
         return user_id;
@@ -60,4 +68,13 @@ public class User {
     public void setCalendarList(List<Calendar> calendars) {
         this.calendars = calendars;
     }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
+
 }

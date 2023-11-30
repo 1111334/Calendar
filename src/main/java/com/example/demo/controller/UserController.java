@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.DTO.UserDTO;
+import com.example.demo.model.Event;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class UserController {
         if (user != null) {
             // Se l'utente è stato trovato, convertirlo in un DTO e restituirlo nella risposta
             UserDTO userDTO = UserDTO.fromUser(user);
-            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+               return new ResponseEntity<>(userDTO, HttpStatus.OK);
         } else {
             // Se l'utente non è stato trovato, restituire una risposta 404 Not Found
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -58,14 +59,9 @@ public class UserController {
         }
     }
 
-    @DeleteMapping(value = "/delete")
-    public ResponseEntity<String> deleteUser(@RequestBody User user) {
-        userService.deleteUser(user);
-        return ResponseEntity.ok("Utente eliminato con successo");
-    }
 
-    User user = new User();
-    UserDTO userDTO = UserDTO.fromUser(user);
+    //User user = new User();
+    //UserDTO userDTO = UserDTO.fromUser(user);
 
 
     //User user =  new User();

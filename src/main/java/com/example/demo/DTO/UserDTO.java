@@ -1,5 +1,6 @@
 package com.example.demo.DTO;
 
+import com.example.demo.model.InvitationEvent;
 import com.example.demo.model.User;
 
 public class UserDTO {
@@ -16,6 +17,8 @@ public class UserDTO {
     public UserDTO() {
 
     }
+
+
 
     public String getUsername() {
         return username;
@@ -53,7 +56,7 @@ public class UserDTO {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        userDTO.setPassword(user.getPassword());
+        user.setPassword(userDTO.getPassword());
         return user;
     }
 }
