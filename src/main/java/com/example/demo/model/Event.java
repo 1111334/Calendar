@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -13,15 +16,22 @@ public class Event {
     @GeneratedValue
     private Long event_id;
     private String title;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
     private String location;
+    //@Temporal(TemporalType.TIMESTAMP)
+    //private Date date;
 
-    public Event(String title, String date, String location) {
-        this.title = title;
-        this.date = new Date();
-        this.location = location;
-    }
+    //@Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+    private LocalDateTime toStart;
+
+    //@Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+    private LocalDateTime theEnd;
+
+    //private RecurrenceType recurrenceType;
+
+    @JsonIgnore
+    private Integer recurrenceInterval;
 
     public Event() {
 
@@ -32,8 +42,12 @@ public class Event {
     @JsonIgnore
     private Calendar calendar;
 
-    @PrePersist
-    protected void onCreate() {date = new Date();}
+    //@PrePersist
+    //protected void onCreate() {date = new Date();}
+
+    @ManyToMany(mappedBy = "events")
+    @JsonIgnore
+    private List<User> users;
 
 
     public Long getEventId() {
@@ -52,14 +66,6 @@ public class Event {
         this.title = title;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public String getLocation() {
         return location;
     }
@@ -68,12 +74,36 @@ public class Event {
         this.location = location;
     }
 
+    public LocalDateTime getToStart() {
+        return toStart;
+    }
+
+    public void setToStart(LocalDateTime toStart) {
+        this.toStart = toStart;
+    }
+
+    public LocalDateTime getTheEnd() {
+        return theEnd;
+    }
+
+    public void setTheEnd(LocalDateTime theEnd) {
+        this.theEnd = theEnd;
+    }
+
     public Calendar getCalendar() {
         return calendar;
     }
 
     public void setCalendar(Calendar calendar) {
         this.calendar = calendar;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
 

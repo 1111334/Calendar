@@ -43,6 +43,10 @@ public class CalendarService {
     }
 
     // EventService.java
+    public void deleteCalendar(Long calendarId) {
+        calendarRepository.deleteById(calendarId);
+    }
+
 
 
 

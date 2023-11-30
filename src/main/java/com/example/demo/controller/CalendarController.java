@@ -2,14 +2,13 @@ package com.example.demo.controller;
 
 
 import com.example.demo.model.Calendar;
-import com.example.demo.model.Event;
 import com.example.demo.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 public class CalendarController {
@@ -32,7 +31,7 @@ public class CalendarController {
         return ResponseEntity.ok(calendar);
     }
 
-    @PostMapping("/events/{eventId}/calendars")
+    @PostMapping("/events/{eventId}/calendars") //Non funziona
     public ResponseEntity<String> associateEventToCalendar(@PathVariable Long eventId, @RequestBody Calendar calendar) {
         try {
             //associare il calendario all'evento
@@ -40,6 +39,16 @@ public class CalendarController {
             return ResponseEntity.ok("Calendario associato all'evento con successo");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Errore durante l'associazione del calendario all'evento: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete-calendar/{calendarId}")
+    public ResponseEntity<String> deleteCalendar(@PathVariable Long calendarId) {
+        try {
+            calendarService.deleteCalendar(calendarId);
+            return ResponseEntity.ok("Calendario eliminato con successo");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Errore durante l'eliminazione del calendario: " + e.getMessage());
         }
     }
 
