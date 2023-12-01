@@ -2,14 +2,15 @@ package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+
 import java.util.List;
 
 @Entity
 public class User {
-
     @Id
     @GeneratedValue
-    private long user_id;
+    private Long user_id;
     private String username;
     private String email;
     private String password;
@@ -29,11 +30,11 @@ public class User {
 
 
 
-    public long getUser_id() {
+    public Long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(long user_id) {
+    public void setUser_id(Long user_id) {
         this.user_id = user_id;
     }
 
@@ -61,11 +62,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Calendar> getCalendarList() {
+    public List<Calendar> getCalendars() {
         return calendars;
     }
 
-    public void setCalendarList(List<Calendar> calendars) {
+    public void setCalendars(List<Calendar> calendars) {
         this.calendars = calendars;
     }
 

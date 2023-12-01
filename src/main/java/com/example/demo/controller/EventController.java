@@ -37,7 +37,20 @@ public class EventController {
         }
     }
 
-    @PostMapping("/calendars/{calendarId}/events") //Funziona
+    @PostMapping("/{calendarID}/start/{startTime}/duration/{duration}")
+    public ResponseEntity createNewEvent(@PathVariable Long calendarID,
+                                         @RequestBody Event event,
+                                         @PathVariable LocalDateTime startTime,
+                                         @PathVariable int duration) {
+
+        try {
+            return ResponseEntity.ok(eventService.createEvent(calendarID, event, startTime, duration));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/calendars/{calendarId}/events")
     public ResponseEntity<String> associateEventToCalendar(@PathVariable Long calendarId, @RequestBody Event event) {
         try {
             //associare l'evento al calendario
@@ -48,22 +61,20 @@ public class EventController {
         }
     }
 
-    //@PostMapping("/{calendarID}/start/{startTime}/duration/{duration}")
-    //public ResponseEntity createNewEvent(@PathVariable int calendarID,
-    //                                     @RequestBody Event event,
-    //                                     @PathVariable LocalDateTime startTime,
-    //                                     @PathVariable int duration){
-//
-    //    try {
-    //        return ResponseEntity.ok(eventService.createEvent(calendarID, event, startTime, duration));
-    //    } catch (Exception e){
-    //        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    //    }
-    //}
 
     @GetMapping(value = "/get-events")
     public List<Event> getEvents() {
         return eventService.getEvents();
+    }
+
+    @GetMapping("/{calendarID}")
+    public ResponseEntity viewAllEventsToCalendar(@PathVariable Long calendarID) {
+
+        try {
+            return ResponseEntity.ok(eventService.viewEventToCalendar(calendarID));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @PutMapping(value = "/update-event")
@@ -76,6 +87,17 @@ public class EventController {
         }
     }
 
+
+    @PutMapping("/{eventID}/user/{userID}")
+    public ResponseEntity invitedUser(@PathVariable Long eventID, @PathVariable Long userID) {
+
+        try {
+            return ResponseEntity.ok(eventService.inviteUser(eventID, userID));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @DeleteMapping(value = "/delete-event/{eventId}") // Funziona
     public ResponseEntity<String> deleteEvent(@PathVariable Long eventId) {
         try {
@@ -85,7 +107,6 @@ public class EventController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 
 
 }

@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
 
-import com.example.demo.DTO.UserDTO;
 import com.example.demo.model.Calendar;
-import com.example.demo.model.Event;
 import com.example.demo.model.User;
+import com.example.demo.repository.CalendarRepository;
 import com.example.demo.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +19,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // public UserService(UserRepository userRepository) {
-    //     this.userRepository = userRepository;
-    // }
+    @Autowired
+    private CalendarRepository calendarRepository;
+
 
     public void insertUser(User user) {
         userRepository.save(user);
@@ -36,13 +36,15 @@ public class UserService {
         userRepository.save(updatedUser);
     }
 
-    public void deleteUser(User user) {
-        userRepository.delete(user);
-    }
-
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
+
+    public void deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+
 
 
 }

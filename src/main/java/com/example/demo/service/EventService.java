@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import ch.qos.logback.core.boolex.EventEvaluator;
+import com.example.demo.Util.RecurrenceManager;
 import com.example.demo.model.Calendar;
 import com.example.demo.model.Event;
+import com.example.demo.model.User;
 import com.example.demo.repository.CalendarRepository;
 import com.example.demo.repository.EventRepository;
 import com.example.demo.repository.UserRepository;
@@ -32,38 +34,83 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    //public void associateEventToCalendar(Long id, Event event) throws Exception {
-    //    // Verifica che il calendario esista
-    //    Calendar calendar = event.getCalendar();
-    //    if (calendar == null) {
-    //        throw new Exception("Calendar not found");
-    //    }else {
-    //        event.setCalendar(calendar);
-    //        eventRepository.save(event);
-    //    }
+    public Event createEvent(Long calendarID, Event event, LocalDateTime startTime, int duration) throws Exception {
 
-    //}
+        RecurrenceManager recurrenceManager = new RecurrenceManager();
 
+        if (calendarRepository.findById(calendarID).isPresent()) {
+            Calendar calendar = calendarRepository.findById(calendarID).orElse(null);
+
+            event.setCalendar(calendar);
+
+            recurrenceManager.setRecurrenceTimeAndDuration(event, startTime, duration);
+        } else {
+            throw new Exception(String.format("Calendar with ID %s not found", calendarID));
+        }
+
+        return eventRepository.save(event);
+    }
 
     @Transactional
     public void associateEventToCalendar(Long calendarId, Event event) throws Exception {
-        // Verifica che il calendario esista
+        Optional<Calendar> optionalCalendar = calendarRepository.findById(calendarId);
 
-        if (calendarRepository.findById(calendarId).isPresent()) {
-            Calendar calendar = calendarRepository.findById(calendarId).orElse(null);
+        if (optionalCalendar.isPresent()) {
+            Calendar calendar = optionalCalendar.get();
+
+            // Aggiorna il lato degli eventi
             event.setCalendar(calendar);
-            List<Event> events;
-            events = calendar.getEvents();
+            eventRepository.save(event);
+
+            // Aggiorna il lato del calendario
+            List<Event> events = calendar.getEvents();
             events.add(event);
             calendar.setEvents(events);
 
+            // Stampa a console per debugging
+            System.out.println("Calendario prima del salvataggio: " + calendar);
+
+            // Salva il calendario
             calendarRepository.save(calendar);
-            eventRepository.save(event);
         } else {
             throw new Exception("Calendario non trovato con ID " + calendarId);
         }
-        // Salva l'evento nel database
     }
+
+    public List<Event> viewEventToCalendar(Long calendarID) throws Exception {
+
+        if (calendarRepository.findById(calendarID).isPresent()) {
+            Calendar calendar = calendarRepository.findById(calendarID).orElse(null);
+
+            List<Event> events;
+            events = calendar.getEvents();
+
+            return events;
+
+        } else {
+            throw new Exception(String.format("Calendar with ID %s not exist", calendarID));
+        }
+    }
+
+    @Transactional
+    public String inviteUser(Long eventID, Long userID) throws Exception {
+
+        Event event = eventRepository.findById(eventID).get();
+        User user = userRepository.findById(userID).get();
+
+        if (event == null || user == null) {
+
+            throw new Exception("Event or user not found");
+        } else {
+            event.getUsers().add(user);
+            user.getEvents().add(event);
+            eventRepository.save(event);
+            userRepository.save(user);
+            return "User successfully invited ";
+        }
+
+    }
+
 
     public List<Event> getEvents() {
         return eventRepository.findAll();
