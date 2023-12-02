@@ -4,6 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Calendar;
 import com.example.demo.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +32,24 @@ public class CalendarController {
         return ResponseEntity.ok(calendar);
     }
 
-    @PostMapping("/events/{eventId}/calendars") //Non funziona
-    public ResponseEntity<String> associateEventToCalendar(@PathVariable Long eventId, @RequestBody Calendar calendar) {
+
+    @PostMapping("/calendar/{userID}")
+    public ResponseEntity createNewCalendar(@PathVariable Long userID, @RequestBody Calendar calendar){
         try {
-            //associare il calendario all'evento
-            calendarService.associateCalendarToEvent(eventId, calendar);
-            return ResponseEntity.ok("Calendario associato all'evento con successo");
+            return ResponseEntity.ok(calendarService.createCalendar(userID, calendar));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+    }
+
+    @PutMapping("/update-calendar/{calendarId}")
+    public ResponseEntity<String> updateCalendar(@PathVariable Long calendarId, @RequestBody Calendar calendar) {
+        try {
+            calendarService.updateCalendar(calendarId, calendar);
+            return ResponseEntity.ok("Calendario aggiornato con successo");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Errore durante l'associazione del calendario all'evento: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Errore durante l'aggiornamento del calendario: " + e.getMessage());
         }
     }
 

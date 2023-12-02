@@ -27,11 +27,6 @@ public class Calendar {
     private List<Event> events = new ArrayList<>();
 
 
-    //public Calendar(User user, List<Event> events) {
-    //    this.user = user;
-    //    this.events = events;
-    //}
-
     public Calendar() {
 
     }
