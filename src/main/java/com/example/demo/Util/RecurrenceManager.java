@@ -5,12 +5,12 @@ import com.example.demo.model.Event;
 import java.time.LocalDateTime;
 
 public class RecurrenceManager {
-    public void setRecurrenceTimeAndDuration(Event event, LocalDateTime startTime, int duration){
+    public void setRecurrenceTimeAndDuration(Event event, LocalDateTime startTime, int duration) {
 
         event.setToStart(startTime);
         event.setRecurrenceInterval(duration);
 
-        switch (event.getRecurrenceType()){
+        switch (event.getRecurrenceType()) {
 
             case DAILY:
                 event.setTheEnd(startTime.plusDays(duration));
@@ -25,5 +25,8 @@ public class RecurrenceManager {
                 event.setTheEnd(startTime.minusYears(duration));
                 break;
         }
+
+
+
     }
 }

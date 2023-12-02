@@ -1,13 +1,9 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.DTO.InvitoDTO;
-import com.example.demo.model.Calendar;
 import com.example.demo.model.Event;
-import com.example.demo.model.User;
 import com.example.demo.service.CalendarService;
 import com.example.demo.service.EventService;
-import com.example.demo.service.InviteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +19,9 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+
+    @Autowired
+    CalendarService calendarService;
     //  public EventController(EventService eventService) {
     //      this.eventService = eventService;
     //  }
@@ -37,7 +36,8 @@ public class EventController {
         }
     }
 
-    @PostMapping("/{calendarID}/start/{startTime}/duration/{duration}")
+
+    @PostMapping("/calendars/{calendarID}/events/{startTime}/{duration}")
     public ResponseEntity createNewEvent(@PathVariable Long calendarID,
                                          @RequestBody Event event,
                                          @PathVariable LocalDateTime startTime,
@@ -49,6 +49,8 @@ public class EventController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+
 
     @PostMapping("/calendars/{calendarId}/events")
     public ResponseEntity<String> associateEventToCalendar(@PathVariable Long calendarId, @RequestBody Event event) {

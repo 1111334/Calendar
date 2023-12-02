@@ -1,6 +1,5 @@
 package com.example.demo.DTO;
 
-import com.example.demo.model.InvitationEvent;
 import com.example.demo.model.User;
 
 public class UserDTO {
